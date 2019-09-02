@@ -11,8 +11,6 @@ class FrontEndController extends Controller
 {
     public function index()
     {
-        //$s = Post::orderBy('created_at', 'desc')->skip(1)->take(1)->get()->first();
-        //dd($s);
          return view('vendor.index')
                 ->with('title', Setting::first()->site_name)
                 ->with('categories', Category::take(5)->get())

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Excel;
 use Illuminate\Http\Request;
 use App\Category;
 use Session;
@@ -112,5 +113,27 @@ class CategoryController extends Controller
         Session::flash('success','You deleted the category successfully');
 
         return redirect()->back();
+    }
+
+    public function importExcel(Request $request)
+    {
+ 
+        $path = $request->file('import_file')->getRealPath();
+        $data = Excel::load($path)->get();
+
+ 
+        if($data->count()){
+            foreach ($data as $key => $value) {
+                $arr[] = ['name' => $value->name];
+            }
+ 
+            if(!empty($arr)){
+                Category::insert($arr);
+            }
+        }
+
+        dd("hello");
+ 
+        return back()->with('success', 'Insert Record successfully.');
     }
 }
